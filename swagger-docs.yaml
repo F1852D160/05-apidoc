@@ -1,0 +1,75 @@
+openapi: 3.0.0
+info:
+  title: Documentacion API de mi proyecto json web tokens JWT
+  version: 1.0.0
+  description: Documentacion API de mi proyecto json web tokens JWT
+servers:
+  - url: http://localhost:3000
+paths:
+  /login:
+    post:
+      summary: Login de usuario2
+      description: Recibe los datos de login de un usuario y devuelve un token JWT si las credenciales son correctas.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                usuario:
+                  type: string
+                  example: admin
+                clave:
+                  type: string
+                  example: admin
+      responses:
+        '200':
+          description: Autenticación correcta.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mensaje:
+                    type: string
+                    example: Autenticación correcta
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        '401':
+          description: Usuario o contraseña incorrectos.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mensaje:
+                    type: string
+                    example: Usuario o contraseña incorrectos
+  /productos:
+    get:
+      summary: retorna la lista de productos
+      description: permite listar los usuarios siempre y cuando se envie un token valido
+      parameters:
+         - name: token-de-acceso
+           in: header
+           description: Token de acceso JWT para validar
+           required: true
+           schema:
+            type: string
+
+      responses:
+        200:
+          description: retorna un json con la lista lista de los productos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    nombre:
+                      type: string
